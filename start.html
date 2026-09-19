@@ -111,6 +111,25 @@
     .do ol { margin-left: 20px; }
     .do li { margin-bottom: 5px; }
 
+    .ask {
+      background: #eef6fe;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .ask b {
+      display: block;
+      font-size: 0.82em;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .ask p { font-size: 0.98em; margin: 0; color: #1d1d1f; }
+    .ask em { font-style: normal; font-weight: 600; }
+
     .vid {
       display: inline-block;
       background: var(--accent);
@@ -235,8 +254,13 @@
     <h2>Make the text bigger</h2>
     <p>Easiest one. Under a minute. If things are hard to read, this fixes that right away.</p>
 
+    <div class="ask">
+      <b>Easiest way — just say this</b>
+      <p><em>“Hey Siri, increase the text size.”</em></p>
+    </div>
+
     <div class="do">
-      <b>What to do</b>
+      <b>Or do it by hand</b>
       <ol>
         <li>Open <b>Settings</b></li>
         <li>Tap <b>Accessibility</b></li>
@@ -253,15 +277,20 @@
   <div class="step" id="s2">
     <span class="step-num">Step 2</span>
     <h2>Stop accidental taps</h2>
-    <p>If your hand shakes and the phone does things you didn't mean — this is the fix. Two settings.</p>
+    <p>If your hand shakes and the phone does things you didn't mean — this is the fix.</p>
+
+    <div class="ask">
+      <b>Easiest way — just say this</b>
+      <p><em>“Hey Siri, turn on Touch Accommodations.”</em></p>
+    </div>
 
     <div class="do">
-      <b>What to do</b>
+      <b>Or do it by hand</b>
       <ol>
-        <li>Open <b>Settings</b></li>
-        <li>Tap <b>Accessibility</b> → <b>Touch</b></li>
+        <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Touch</b></li>
         <li>Tap <b>Touch Accommodations</b> → turn on</li>
-        <li>Turn on <b>Hold Duration</b> and set <b>Ignore Repeat</b> to about 0.3 seconds</li>
+        <li>Turn on <b>Hold Duration</b></li>
+        <li>Set <b>Ignore Repeat</b> to about 0.3 seconds</li>
       </ol>
     </div>
 
@@ -275,12 +304,17 @@
     <h2>Control the phone with your voice</h2>
     <p>The big one. Bigger effort — maybe save this for a day you feel good. But it's the one that changes the most.</p>
 
+    <div class="ask">
+      <b>After it's set up once, just say</b>
+      <p><em>“Hey Siri, turn on Voice Control.”</em> — and to stop it, “turn off Voice Control.”</p>
+    </div>
+
     <div class="do">
-      <b>What to do</b>
+      <b>First-time setup (needs Wi-Fi)</b>
       <ol>
         <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Voice Control</b></li>
-        <li>Turn it on</li>
-        <li>Say <b>"Show numbers"</b> — then say a number to tap it</li>
+        <li>Turn it on — a file downloads</li>
+        <li>Say <b>“Show numbers”</b> — then say a number to tap it</li>
       </ol>
     </div>
 
@@ -291,6 +325,7 @@
   <div class="helpline">
     <h3>Or just ask someone to set it up</h3>
     <p>These are all settings, not habits. Somebody else can turn them on for you in a few minutes — you'd only need to <em>use</em> them afterwards. That's allowed.</p>
+    <p style="margin-top:10px;font-size:0.9em">And if you have the new Siri, you can simply ask it to turn most of these on for you.</p>
   </div>
 
   <!-- OPTIONAL -->
@@ -300,7 +335,7 @@
 
       <div class="more-item">
         <h3>AssistiveTouch — a floating button</h3>
-        <p>An on-screen button that replaces hard-to-press physical buttons.</p>
+        <p>An on-screen button that replaces hard-to-press physical buttons. You can also just say <em>“Hey Siri, turn on AssistiveTouch.”</em></p>
         <a href="https://www.youtube.com/watch?v=_j4-NTg3QsE" target="_blank">Video (3:40)</a>
         <a href="https://support.apple.com/en-us/111794" target="_blank">Read</a>
       </div>
