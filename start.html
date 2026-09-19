@@ -162,6 +162,23 @@
     .vid:hover { background: #005bb5; }
     .vid .len { opacity: .8; font-weight: 400; }
 
+    .shot {
+      margin: 18px 0 4px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e5e5ea;
+      background: #fff;
+    }
+    .shot img { display: block; width: 100%; height: auto; }
+    .shot figcaption {
+      font-size: 0.84em;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-top: 1px solid #f0f0f2;
+      background: #fafafa;
+    }
+    .shot figcaption b { color: var(--text); font-weight: 650; }
+
     .btn-done {
       display: block;
       width: 100%;
@@ -288,6 +305,11 @@
       <p>This is the one thing Siri <em>can't</em> do for you — it'll only point you to the setting. You'll have to move the slider yourself. Takes about 20 seconds.</p>
     </div>
 
+    <figure class="shot">
+      <img src="img/step1-text-size.png" alt="iPhone Larger Text settings screen. Red boxes mark the Larger Accessibility Sizes switch and the text size slider at the bottom.">
+      <figcaption><b>The two things to touch.</b> The switch at the top, then drag the slider at the bottom.</figcaption>
+    </figure>
+
     <a class="vid" href="https://www.youtube.com/watch?v=_R0mpzMkSjI" target="_blank">Watch: 47 seconds <span class="len">▶</span></a>
     <button class="btn-done" onclick="markDone('s1',this)">I did this</button>
   </div>
@@ -314,6 +336,11 @@
       <p>Siri can flip this switch on, but it <em>can't</em> adjust the settings inside. Turning it on without setting those first does nothing useful. Apple's own guidance is to set your preferences <em>before</em> turning the feature on.</p>
     </div>
 
+    <figure class="shot">
+      <img src="img/step2-touch-accommodations.png" alt="iPhone Touch Accommodations settings. Red boxes mark the Hold Duration row near the top and the Ignore Repeat row further down.">
+      <figcaption><b>The two settings that help.</b> Turn on <b>Hold Duration</b> at the top, and set <b>Ignore Repeat</b> below it.</figcaption>
+    </figure>
+
     <a class="vid" href="https://support.apple.com/en-us/102222" target="_blank">Apple's short guide <span class="len">↗</span></a>
     <button class="btn-done" onclick="markDone('s2',this)">I did this</button>
   </div>
@@ -337,6 +364,11 @@
         <li>Say <b>“Show numbers”</b> — then say a number to tap it</li>
       </ol>
     </div>
+
+    <figure class="shot">
+      <img src="img/step3-voice-control.png" alt="iPhone Voice Control settings. Red boxes mark the Voice Control switch at the top and the Open Voice Control Tutorial link.">
+      <figcaption><b>Turn it on at the top, then tap the tutorial.</b> Apple's built-in tutorial walks you through it right on your phone.</figcaption>
+    </figure>
 
     <a class="vid" href="https://www.youtube.com/watch?v=4tjIIVVxTfw" target="_blank">Watch: 75 seconds <span class="len">▶</span></a>
     <button class="btn-done" onclick="markDone('s3',this)">I did this</button>
