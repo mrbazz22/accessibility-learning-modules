@@ -79,26 +79,78 @@
     .step {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 24px;
       margin-bottom: 18px;
       box-shadow: var(--shadow);
       border: 1.5px solid transparent;
       transition: border-color .2s;
+      overflow: hidden;
     }
     .step.done { border-color: var(--green); }
+
+    /* collapsible header */
+    .step > summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .step > summary::-webkit-details-marker { display: none; }
+    .step > summary::marker { content: ""; }
+    .step > summary:hover { background: #fafafa; }
+    .step[open] > summary { padding-bottom: 14px; }
+
     .step-num {
-      display: inline-block;
+      flex-shrink: 0;
       background: var(--accent);
       color: #fff;
-      font-size: 0.8em;
+      font-size: 0.72em;
       font-weight: 700;
-      padding: 4px 12px;
+      padding: 5px 11px;
       border-radius: 999px;
-      margin-bottom: 12px;
+      white-space: nowrap;
     }
     .step.done .step-num { background: var(--green); }
-    .step h2 { font-size: 1.2em; font-weight: 650; margin-bottom: 8px; letter-spacing: -0.01em; }
-    .step p { color: #3a3a3c; font-size: 0.95em; margin-bottom: 16px; }
+
+    .step-head {
+      flex: 1;
+      min-width: 0;
+    }
+    .step-head h2 {
+      font-size: 1.1em;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+    .step-sub {
+      display: block;
+      font-size: 0.82em;
+      color: var(--muted);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+
+    .chev {
+      flex-shrink: 0;
+      color: var(--muted);
+      font-size: 0.8em;
+      transition: transform .25s ease;
+    }
+    .step[open] .chev { transform: rotate(180deg); }
+
+    .tick {
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 1.05em;
+      font-weight: 700;
+      display: none;
+    }
+    .step.done .tick { display: inline; }
+
+    .step-body { padding: 0 24px 24px; }
+    .step-body p { color: #3a3a3c; font-size: 0.95em; margin-bottom: 16px; }
 
     .do {
       background: #f5f5f7;
@@ -261,7 +313,9 @@
 
     @media (max-width: 480px) {
       body { padding: 16px 14px 50px; }
-      .step { padding: 20px; }
+      .step > summary { padding: 18px 18px; gap: 11px; }
+      .step[open] > summary { padding-bottom: 12px; }
+      .step-body { padding: 0 18px 20px; }
       h1 { font-size: 25px; }
     }
   </style>
@@ -285,94 +339,121 @@
   </div>
 
   <!-- STEP 1 -->
-  <div class="step" id="s1">
-    <span class="step-num">Step 1</span>
-    <h2>Make the text bigger</h2>
-    <p>Easiest one. Under a minute. If things are hard to read, this fixes that right away.</p>
+  <details class="step" id="s1" open>
+    <summary>
+      <span class="step-num">Step 1</span>
+      <span class="step-head">
+        <h2>Make the text bigger</h2>
+        <span class="step-sub">~1 minute · easiest one</span>
+      </span>
+      <span class="tick">✓</span>
+      <span class="chev">▼</span>
+    </summary>
+    <div class="step-body">
+      <p>If things are hard to read, this fixes that right away.</p>
 
-    <div class="do">
-      <b>What to do</b>
-      <ol>
-        <li>Open <b>Settings</b></li>
-        <li>Tap <b>Accessibility</b></li>
-        <li>Tap <b>Display &amp; Text Size</b></li>
-        <li>Slide <b>Larger Text</b> to on</li>
-      </ol>
+      <div class="do">
+        <b>What to do</b>
+        <ol>
+          <li>Open <b>Settings</b></li>
+          <li>Tap <b>Accessibility</b></li>
+          <li>Tap <b>Display &amp; Text Size</b></li>
+          <li>Slide <b>Larger Text</b> to on</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <b>Heads up</b>
+        <p>This is the one thing Siri <em>can't</em> do for you — it'll only point you to the setting. You'll have to move the slider yourself. Takes about 20 seconds.</p>
+      </div>
+
+      <figure class="shot">
+        <img src="img/step1-text-size.png" alt="iPhone Larger Text settings screen. Red boxes mark the Larger Accessibility Sizes switch and the text size slider at the bottom.">
+        <figcaption><b>The two things to touch.</b> The switch at the top, then drag the slider at the bottom.</figcaption>
+      </figure>
+
+      <a class="vid" href="https://www.youtube.com/watch?v=_R0mpzMkSjI" target="_blank">Watch: 47 seconds <span class="len">▶</span></a>
+      <button class="btn-done" onclick="markDone('s1',this)">I did this</button>
     </div>
-
-    <div class="note">
-      <b>Heads up</b>
-      <p>This is the one thing Siri <em>can't</em> do for you — it'll only point you to the setting. You'll have to move the slider yourself. Takes about 20 seconds.</p>
-    </div>
-
-    <figure class="shot">
-      <img src="img/step1-text-size.png" alt="iPhone Larger Text settings screen. Red boxes mark the Larger Accessibility Sizes switch and the text size slider at the bottom.">
-      <figcaption><b>The two things to touch.</b> The switch at the top, then drag the slider at the bottom.</figcaption>
-    </figure>
-
-    <a class="vid" href="https://www.youtube.com/watch?v=_R0mpzMkSjI" target="_blank">Watch: 47 seconds <span class="len">▶</span></a>
-    <button class="btn-done" onclick="markDone('s1',this)">I did this</button>
-  </div>
+  </details>
 
   <!-- STEP 2 -->
-  <div class="step" id="s2">
-    <span class="step-num">Step 2</span>
-    <h2>Stop accidental taps</h2>
-    <p>If your hand shakes and the phone does things you didn't mean — this is the fix.</p>
+  <details class="step" id="s2">
+    <summary>
+      <span class="step-num">Step 2</span>
+      <span class="step-head">
+        <h2>Stop accidental taps</h2>
+        <span class="step-sub">~5 minutes · do this one by hand</span>
+      </span>
+      <span class="tick">✓</span>
+      <span class="chev">▼</span>
+    </summary>
+    <div class="step-body">
+      <p>If your hand shakes and the phone does things you didn't mean — this is the fix.</p>
 
-    <div class="do">
-      <b>What to do</b>
-      <ol>
-        <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Touch</b></li>
-        <li>Tap <b>Touch Accommodations</b></li>
-        <li>First, set <b>Ignore Repeat</b> to about 0.3 seconds</li>
-        <li>Turn on <b>Hold Duration</b></li>
-        <li>Then turn <b>Touch Accommodations</b> on</li>
-      </ol>
+      <div class="do">
+        <b>What to do</b>
+        <ol>
+          <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Touch</b></li>
+          <li>Tap <b>Touch Accommodations</b></li>
+          <li>First, set <b>Ignore Repeat</b> to about 0.3 seconds</li>
+          <li>Turn on <b>Hold Duration</b></li>
+          <li>Then turn <b>Touch Accommodations</b> on</li>
+        </ol>
+      </div>
+
+      <div class="note">
+        <b>Do this one by hand — and in this order</b>
+        <p>Siri can flip this switch on, but it <em>can't</em> adjust the settings inside. Turning it on without setting those first does nothing useful. Apple's own guidance is to set your preferences <em>before</em> turning the feature on.</p>
+      </div>
+
+      <figure class="shot">
+        <img src="img/step2-touch-accommodations.png" alt="iPhone Touch Accommodations settings. Red boxes mark the Hold Duration row near the top and the Ignore Repeat row further down.">
+        <figcaption><b>The two settings that help.</b> Turn on <b>Hold Duration</b> at the top, and set <b>Ignore Repeat</b> below it.</figcaption>
+      </figure>
+
+      <a class="vid" href="https://support.apple.com/en-us/102222" target="_blank">Apple's short guide <span class="len">↗</span></a>
+      <button class="btn-done" onclick="markDone('s2',this)">I did this</button>
     </div>
-
-    <div class="note">
-      <b>Do this one by hand — and in this order</b>
-      <p>Siri can flip this switch on, but it <em>can't</em> adjust the settings inside. Turning it on without setting those first does nothing useful. Apple's own guidance is to set your preferences <em>before</em> turning the feature on.</p>
-    </div>
-
-    <figure class="shot">
-      <img src="img/step2-touch-accommodations.png" alt="iPhone Touch Accommodations settings. Red boxes mark the Hold Duration row near the top and the Ignore Repeat row further down.">
-      <figcaption><b>The two settings that help.</b> Turn on <b>Hold Duration</b> at the top, and set <b>Ignore Repeat</b> below it.</figcaption>
-    </figure>
-
-    <a class="vid" href="https://support.apple.com/en-us/102222" target="_blank">Apple's short guide <span class="len">↗</span></a>
-    <button class="btn-done" onclick="markDone('s2',this)">I did this</button>
-  </div>
+  </details>
 
   <!-- STEP 3 -->
-  <div class="step" id="s3">
-    <span class="step-num">Step 3</span>
-    <h2>Control the phone with your voice</h2>
-    <p>The big one. Bigger effort — maybe save this for a day you feel good. But it's the one that changes the most.</p>
+  <details class="step" id="s3">
+    <summary>
+      <span class="step-num">Step 3</span>
+      <span class="step-head">
+        <h2>Control the phone with your voice</h2>
+        <span class="step-sub">~10 minutes · biggest change</span>
+      </span>
+      <span class="tick">✓</span>
+      <span class="chev">▼</span>
+    </summary>
+    <div class="step-body">
+      <p>The big one — maybe save it for a day you feel good. But it's the one that changes the most.</p>
 
-    <div class="ask">
-      <b>After it's set up once, just say</b>
-      <p><em>“Hey Siri, turn on Voice Control.”</em> — and to stop it, “turn off Voice Control.”</p>
+      <div class="ask">
+        <b>After it's set up once, just say</b>
+        <p><em>“Hey Siri, turn on Voice Control.”</em> — and to stop it, “turn off Voice Control.”</p>
+      </div>
+
+      <div class="do">
+        <b>First-time setup (needs Wi-Fi)</b>
+        <ol>
+          <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Voice Control</b></li>
+          <li>Turn it on — a file downloads</li>
+          <li>Say <b>“Show numbers”</b> — then say a number to tap it</li>
+        </ol>
+      </div>
+
+      <figure class="shot">
+        <img src="img/step3-voice-control.png" alt="iPhone Voice Control settings. Red boxes mark the Voice Control switch at the top and the Open Voice Control Tutorial link.">
+        <figcaption><b>Turn it on at the top, then tap the tutorial.</b> Apple's built-in tutorial walks you through it right on your phone.</figcaption>
+      </figure>
+
+      <a class="vid" href="https://www.youtube.com/watch?v=4tjIIVVxTfw" target="_blank">Watch: 75 seconds <span class="len">▶</span></a>
+      <button class="btn-done" onclick="markDone('s3',this)">I did this</button>
     </div>
-
-    <div class="do">
-      <b>First-time setup (needs Wi-Fi)</b>
-      <ol>
-        <li>Open <b>Settings</b> → <b>Accessibility</b> → <b>Voice Control</b></li>
-        <li>Turn it on — a file downloads</li>
-        <li>Say <b>“Show numbers”</b> — then say a number to tap it</li>
-      </ol>
-    </div>
-
-    <figure class="shot">
-      <img src="img/step3-voice-control.png" alt="iPhone Voice Control settings. Red boxes mark the Voice Control switch at the top and the Open Voice Control Tutorial link.">
-      <figcaption><b>Turn it on at the top, then tap the tutorial.</b> Apple's built-in tutorial walks you through it right on your phone.</figcaption>
-    </figure>
-
-    <a class="vid" href="https://www.youtube.com/watch?v=4tjIIVVxTfw" target="_blank">Watch: 75 seconds <span class="len">▶</span></a>
-    <button class="btn-done" onclick="markDone('s3',this)">I did this</button>
-  </div>
+  </details>
 
   <div class="helpline">
     <h3>Or just ask someone to set it up</h3>
@@ -437,13 +518,26 @@
   <script>
     const KEY = 'starthere-done';
     const SKEY = 'starthere-size';
+    const OKEY = 'starthere-open';
+    const STEPS = ['s1','s2','s3'];
 
     function get() {
       try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; }
     }
     function save(o) { localStorage.setItem(KEY, JSON.stringify(o)); }
 
-    function markDone(id, btn) {
+    function getOpen() {
+      try {
+        const v = JSON.parse(localStorage.getItem(OKEY));
+        return Array.isArray(v) ? v : null;
+      } catch(e) { return null; }
+    }
+    function saveOpen() {
+      const open = STEPS.filter(id => document.getElementById(id).open);
+      localStorage.setItem(OKEY, JSON.stringify(open));
+    }
+
+    function markDone(id) {
       const d = get();
       d[id] = !d[id];
       save(d);
@@ -452,7 +546,7 @@
 
     function paint() {
       const d = get();
-      ['s1','s2','s3'].forEach(id => {
+      STEPS.forEach(id => {
         const el = document.getElementById(id);
         const btn = el.querySelector('.btn-done');
         if (d[id]) {
@@ -485,6 +579,17 @@
       const s = localStorage.getItem(SKEY) || 't0';
       setSize(s);
       paint();
+
+      // restore which steps were left open
+      const open = getOpen();
+      if (open) {
+        STEPS.forEach(id => { document.getElementById(id).open = open.includes(id); });
+      }
+
+      // remember open/closed as the reader taps
+      STEPS.forEach(id => {
+        document.getElementById(id).addEventListener('toggle', saveOpen);
+      });
     })();
   </script>
 
