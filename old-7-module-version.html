@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessibility Setup — Go at Your Own Pace</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --text: #1d1d1f;
+      --text-secondary: #86868b;
+      --accent: #0071e3;
+      --accent-light: #e8f4fd;
+      --success: #34c759;
+      --warning: #ff9500;
+      --radius: 18px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+      --shadow-hover: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .progress-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .progress-bar-bg {
+      background: #e5e5ea;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent), #42a5f5);
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .progress-subtext {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .break-reminder {
+      background: linear-gradient(135deg, #fff8e1, #fff3cd);
+      border: 1px solid #ffe082;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .break-reminder.show { display: block; }
+
+    .break-reminder h3 {
+      font-size: 15px;
+      color: #856404;
+      margin-bottom: 4px;
+    }
+
+    .break-reminder p {
+      font-size: 14px;
+      color: #856404;
+      opacity: 0.85;
+    }
+
+    .module {
+      background: var(--card);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+
+    .module:hover { box-shadow: var(--shadow-hover); }
+
+    .module-header {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      user-select: none;
+    }
+
+    .module-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .module-number.done {
+      background: var(--success);
+      color: white;
+    }
+
+    .module-title-group {
+      flex: 1;
+    }
+
+    .module-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .module-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .module-chevron {
+      color: var(--text-secondary);
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .module.open .module-chevron { transform: rotate(180deg); }
+
+    .module-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .module.open .module-body {
+      max-height: 2000px;
+    }
+
+    .module-content {
+      padding: 0 24px 24px 80px;
+    }
+
+    .module-content p {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .resource-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .resource-list li {
+      margin-bottom: 10px;
+      padding-left: 24px;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .resource-list li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .resource-list a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .resource-list a:hover { text-decoration: underline; }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover { background: #005bb5; }
+
+    .btn-secondary {
+      background: #e5e5ea;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { background: #d1d1d6; }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .completion-badge {
+      display: inline-block;
+      background: var(--success);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    .tip-box {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .tip-box strong { color: var(--accent); }
+
+    .footer {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .reset-link {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .reset-link:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .module-content { padding-left: 24px; }
+      .module-header { padding: 16px 20px; }
+      .header h1 { font-size: 24px; }
+    }
+
+    /* Text Size Controls */
+    .text-size-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px 20px;
+    }
+
+    .text-size-btn {
+      background: var(--card);
+      border: 2px solid var(--accent-light);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .text-size-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .text-size-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Large text sizes */
+    body.text-large {
+      font-size: 18px;
+    }
+
+    body.text-large .module-title {
+      font-size: 19px;
+    }
+
+    body.text-large .module-content p,
+    body.text-large .resource-list li {
+      font-size: 17px;
+    }
+
+    body.text-large .tip-box {
+      font-size: 16px;
+    }
+
+    body.text-larger {
+      font-size: 20px;
+    }
+
+    body.text-larger .module-title {
+      font-size: 21px;
+    }
+
+    body.text-larger .module-content p,
+    body.text-larger .resource-list li {
+      font-size: 19px;
+    }
+
+    body.text-larger .tip-box {
+      font-size: 18px;
+    }
+
+    body.text-larger .btn {
+      font-size: 17px;
+      padding: 14px 22px;
+    }
+
+    body.text-large .btn {
+      font-size: 16px;
+      padding: 13px 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📱 Accessibility Setup Guide</h1>
+    <p>Go at your own pace</p>
+  </div>
+
+  <div class="text-size-controls">
+    <button class="text-size-btn active" onclick="setTextSize('normal')" id="btn-normal">Aa</button>
+    <button class="text-size-btn" onclick="setTextSize('large')" id="btn-large">A<sup>+</sup></button>
+    <button class="text-size-btn" onclick="setTextSize('larger')" id="btn-larger">A<sup>++</sup></button>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progress-text">0 of 6 modules</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
+    <div class="progress-subtext" id="progress-subtext">
+      Take your time. Each module is designed to be completed in one sitting.
+    </div>
+  </div>
+
+  <div class="break-reminder" id="break-reminder">
+    <h3>☕ Time for a Break</h3>
+    <p>You've completed 3 modules. Great work! Step away, stretch, and come back when you're ready. Your progress is saved automatically.</p>
+  </div>
+
+  <!-- Module 1 -->
+  <div class="module" data-module="1">
+    <div class="module-header" onclick="toggleModule(1)">
+      <div class="module-number" id="num-1">1</div>
+      <div class="module-title-group">
+        <div class="module-title">Quick Wins — Touch Accommodations <span id="badge-1"></span></div>
+        <div class="module-meta">⏱️ ~5 min setup • Instant relief</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>The fastest way to reduce accidental taps and tremor-triggered touches. No learning curve — just better settings.</p>
+        <ul class="resource-list">
+          <li><a href="https://support.apple.com/en-us/102222" target="_blank">Apple Support Guide — Touch Accommodations</a></li>
+          <li><a href="https://www.geeky-gadgets.com/how-to-use-iphone-and-ipad-touch-accomodations-video/" target="_blank">Video Walkthrough (Geeky Gadgets)</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 Pro tip:</strong> Start with <strong>Ignore Repeat</strong> set to 0.2–0.4 seconds. This ignores accidental double-taps from hand tremors.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(1)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(1)" disabled id="undo-1">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 2 -->
+  <div class="module" data-module="2">
+    <div class="module-header" onclick="toggleModule(2)">
+      <div class="module-number" id="num-2">2</div>
+      <div class="module-title-group">
+        <div class="module-title">AssistiveTouch — Your Floating Button <span id="badge-2"></span></div>
+        <div class="module-meta">⏱️ ~10 min setup • Replaces physical buttons</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>A single on-screen button that can do almost anything: Home, Volume, Screenshot, Restart, custom gestures, and more.</p>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=_j4-NTg3QsE" target="_blank">Apple Support Video (3:40)</a></li>
+          <li><a href="https://support.apple.com/en-us/111794" target="_blank">Apple Support Written Guide</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 Try this:</strong> Set the single-tap action to "Home" and double-tap to "Screenshot." It becomes muscle memory fast.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(2)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(2)" disabled id="undo-2">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 3 -->
+  <div class="module" data-module="3">
+    <div class="module-header" onclick="toggleModule(3)">
+      <div class="module-number" id="num-3">3</div>
+      <div class="module-title-group">
+        <div class="module-title">Voice Control — Hands-Free Navigation <span id="badge-3"></span></div>
+        <div class="module-meta">⏱️ ~20 min to learn • Biggest impact</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>Navigate your entire device with voice commands. The cornerstone feature for hands-free iPhone/iPad/Mac use.</p>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=eg22JaZWAgs" target="_blank">Apple Support Video — iPhone/iPad (3:46)</a></li>
+          <li><a href="https://www.youtube.com/watch?v=JBH9LfAGnBI" target="_blank">Deep Dive: iOS Voice Control Full Guide (~15 min)</a></li>
+          <li><a href="https://support.apple.com/guide/accessibility-mac/control-your-mac-and-apps-using-voice-control-mh40719/12.0/mac/12.0" target="_blank">Mac Voice Control Guide</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 Start here:</strong> Say <strong>"Show numbers"</strong> — it overlays a grid on everything. Then say the number to tap it. That's 80% of the power right there.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(3)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(3)" disabled id="undo-3">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 4 -->
+  <div class="module" data-module="4">
+    <div class="module-header" onclick="toggleModule(4)">
+      <div class="module-number" id="num-4">4</div>
+      <div class="module-title-group">
+        <div class="module-title">Apple Watch — One-Handed Control <span id="badge-4"></span></div>
+        <div class="module-meta">⏱️ ~15 min setup • Gesture + Mirroring</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>Control your Watch with hand gestures (no screen touch) or mirror the entire Watch to your iPhone for easier interaction.</p>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=869--vIUIv4" target="_blank">AssistiveTouch on Apple Watch (2:25)</a></li>
+          <li><a href="https://9to5mac.com/2024/07/03/how-to-turn-on-double-tap-on-any-apple-watch/" target="_blank">Double Tap Setup (9to5Mac)</a></li>
+          <li><a href="https://www.jacobsquick.tips/video/use-an-apple-watch-on-your-iphone/" target="_blank">Apple Watch Mirroring to iPhone (2:47)</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 Best combo:</strong> Enable <strong>Double Tap</strong> for quick actions (answer calls, reply to messages) + <strong>Mirroring</strong> for when you need to navigate complex apps.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(4)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(4)" disabled id="undo-4">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 5 -->
+  <div class="module" data-module="5">
+    <div class="module-header" onclick="toggleModule(5)">
+      <div class="module-number" id="num-5">5</div>
+      <div class="module-title-group">
+        <div class="module-title">AirPods — Zero-Hand Calls & Notifications <span id="badge-5"></span></div>
+        <div class="module-meta">⏱️ ~5 min setup • Set and forget</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>Answer calls by nodding, decline by shaking your head. Siri reads notifications aloud. Never touch your phone.</p>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=hEIwja8-dhk" target="_blank">Enable Head Gestures (Video)</a></li>
+          <li><a href="https://www.jacobsquick.tips/video/head-gestures-for-airpods/" target="_blank">Head Gestures Quick Tips (1:34)</a></li>
+          <li><a href="https://support.apple.com/en-us/102536" target="_blank">Announce Notifications Setup</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 The magic moment:</strong> When your phone rings, nod twice. That's it. No reaching, no swiping, no buttons.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(5)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(5)" disabled id="undo-5">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 6 -->
+  <div class="module" data-module="6">
+    <div class="module-header" onclick="toggleModule(6)">
+      <div class="module-number" id="num-6">6</div>
+      <div class="module-title-group">
+        <div class="module-title">The Future — Siri AI / Apple Intelligence <span id="badge-6"></span></div>
+        <div class="module-meta">⏱️ ~10 min of demos • Watch, don't do</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>Siri can now see what's on your screen and act on it across apps — all hands-free. This is where accessibility meets ambient computing.</p>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=LR3c2qGnQgU" target="_blank">Testing Siri's Onscreen Awareness in iOS 27</a></li>
+          <li><a href="https://www.youtube.com/watch?v=2PW5y3zAvPE" target="_blank">Apple's Official WWDC Announcement (1:36)</a></li>
+          <li><a href="https://open.video/@toms-guide/v/i-tested-the-new-siri-ai-its-wild-ios-27-setup-essentials" target="_blank">Tom's Guide: "I Tested The New Siri AI... It's WILD!"</a></li>
+          <li><a href="https://www.youtube.com/watch?v=uGFnyecqFW4" target="_blank">Engadget: First Look at Siri AI (2:05)</a></li>
+          <li><a href="https://www.youtube.com/watch?v=J_7IrDNXUtA" target="_blank">macOS 27: Siri AI Top Features (Video)</a></li>
+        </ul>
+        <div class="tip-box">
+          <strong>💡 Try saying:</strong> <em>"Siri, text Mike the address from this map"</em> — Siri reads the address on screen, opens Messages, and drafts the text. Zero taps.
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(6)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(6)" disabled id="undo-6">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module 7 -->
+  <div class="module" data-module="7">
+    <div class="module-header" onclick="toggleModule(7)">
+      <div class="module-number" id="num-7">7</div>
+      <div class="module-title-group">
+        <div class="module-title">Bonus — Priming Siri AI for Your Needs <span id="badge-7"></span></div>
+        <div class="module-meta">⏱️ ~5 min • One-time setup</div>
+      </div>
+      <div class="module-chevron">▼</div>
+    </div>
+    <div class="module-body">
+      <div class="module-content">
+        <p>How to give Siri AI the context it needs to help you better — without typing a single settings menu.</p>
+
+        <p><strong>Step 1: Create a "My Accessibility Profile" note</strong></p>
+        <p>Open the <strong>Apple Notes</strong> app. Create a new note titled exactly:</p>
+        <p style="font-family: monospace; background: #f0f0f5; padding: 10px 14px; border-radius: 8px; margin: 10px 0;">
+          My Accessibility Profile
+        </p>
+        <p>In the note, write something like:</p>
+        <p style="font-family: monospace; background: #f0f0f5; padding: 14px; border-radius: 8px; margin: 10px 0; font-size: 13px; line-height: 1.6;">
+          I have hand tremors that make precise touch input difficult.<br>
+          I use Voice Control to navigate my iPhone and iPad hands-free.<br>
+          I prefer voice commands over tapping when possible.<br>
+          I use AssistiveTouch as a backup for button replacement.<br>
+          I wear AirPods Pro and use head gestures to answer calls.<br>
+          Please suggest voice-first or hands-free solutions when possible.
+        </p>
+
+        <p><strong>Step 2: Tell Siri about it</strong></p>
+        <p>Say: <em>"Siri, remember that I have hand tremors and use Voice Control. Please check my Accessibility Profile note if you're not sure how to help me."</em></p>
+
+        <p><strong>Step 3: Use it</strong></p>
+        <p>Going forward, when you ask Siri for help with something device-related, it will factor in your preference for hands-free and voice-first solutions. You can also say: <em>"Siri, read my Accessibility Profile note."</em></p>
+
+        <div class="tip-box">
+          <strong>💡 Why this works:</strong> Siri AI draws from your Notes, Calendar, Messages, and Photos for personal context. A note with a clear title becomes part of your "personal knowledge graph" that Siri references.
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-primary" onclick="markDone(7)">Mark Complete</button>
+          <button class="btn btn-secondary" onclick="markNotDone(7)" disabled id="undo-7">Undo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Progress saves automatically in this browser.</p>
+    <p><span class="reset-link" onclick="resetAll()">Reset all progress</span></p>
+  </div>
+
+  <script>
+    const TOTAL_MODULES = 7;
+
+    function getProgress() {
+      const saved = localStorage.getItem('steve-accessibility-progress');
+      return saved ? JSON.parse(saved) : {};
+    }
+
+    function saveProgress(progress) {
+      localStorage.setItem('steve-accessibility-progress', JSON.stringify(progress));
+    }
+
+    function updateUI() {
+      const progress = getProgress();
+      let completed = 0;
+      for (let i = 1; i <= TOTAL_MODULES; i++) {
+        const isDone = progress[i] === true;
+        const numEl = document.getElementById('num-' + i);
+        const badgeEl = document.getElementById('badge-' + i);
+        const undoBtn = document.getElementById('undo-' + i);
+
+        if (isDone) {
+          numEl.textContent = '✓';
+          numEl.classList.add('done');
+          badgeEl.innerHTML = '<span class="completion-badge">Done</span>';
+          if (undoBtn) undoBtn.disabled = false;
+        } else {
+          numEl.textContent = i;
+          numEl.classList.remove('done');
+          badgeEl.innerHTML = '';
+          if (undoBtn) undoBtn.disabled = true;
+        }
+      }
+
+      completed = Object.values(progress).filter(v => v === true).length;
+      const pct = Math.round((completed / TOTAL_MODULES) * 100);
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = completed + ' of ' + TOTAL_MODULES + ' modules';
+
+      // Show break reminder after 3 modules
+      const reminder = document.getElementById('break-reminder');
+      if (completed >= 3 && completed < TOTAL_MODULES) {
+        reminder.classList.add('show');
+      } else {
+        reminder.classList.remove('show');
+      }
+
+      // Celebrate completion
+      if (completed === TOTAL_MODULES) {
+        document.getElementById('progress-subtext').textContent = '🎉 All done! You\'re set up for hands-free computing.';
+      }
+    }
+
+    function toggleModule(id) {
+      const module = document.querySelector('.module[data-module="' + id + '"]');
+      module.classList.toggle('open');
+    }
+
+    function markDone(id) {
+      const progress = getProgress();
+      progress[id] = true;
+      saveProgress(progress);
+      updateUI();
+    }
+
+    function markNotDone(id) {
+      const progress = getProgress();
+      delete progress[id];
+      saveProgress(progress);
+      updateUI();
+    }
+
+    function resetAll() {
+      if (confirm('Reset all progress? This cannot be undone.')) {
+        localStorage.removeItem('steve-accessibility-progress');
+        updateUI();
+      }
+    }
+
+    // Text Size Controls
+    function setTextSize(size) {
+      const body = document.body;
+      body.classList.remove('text-large', 'text-larger');
+
+      document.querySelectorAll('.text-size-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + size).classList.add('active');
+
+      if (size === 'large') {
+        body.classList.add('text-large');
+      } else if (size === 'larger') {
+        body.classList.add('text-larger');
+      }
+
+      localStorage.setItem('steve-accessibility-textsize', size);
+    }
+
+    function restoreTextSize() {
+      const saved = localStorage.getItem('steve-accessibility-textsize');
+      if (saved) setTextSize(saved);
+    }
+
+    // Initialize
+    restoreTextSize();
+    updateUI();
+
+    // Open first incomplete module by default
+    const progress = getProgress();
+    let firstIncomplete = 1;
+    for (let i = 1; i <= TOTAL_MODULES; i++) {
+      if (!progress[i]) { firstIncomplete = i; break; }
+    }
+    toggleModule(firstIncomplete);
+  </script>
+
+</body>
+</html>
